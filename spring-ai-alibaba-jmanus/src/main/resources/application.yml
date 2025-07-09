@@ -4,12 +4,6 @@ spring:
   application:
     name: spring-ai-alibaba-openmanus
   ai:
-    openai:
-      base-url: http://127.0.0.1:11434/v1
-      api-key: sk-dummy-key
-      chat:
-        options:
-          model: qwen3:30b-a3b
     ollama:
       base-url: http://127.0.0.1:11434
       chat:
