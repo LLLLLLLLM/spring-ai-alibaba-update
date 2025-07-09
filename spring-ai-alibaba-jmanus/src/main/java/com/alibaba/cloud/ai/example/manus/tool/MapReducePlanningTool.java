@@ -23,7 +23,7 @@ import com.alibaba.cloud.ai.example.manus.tool.code.ToolExecuteResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.springframework.ai.openai.api.OpenAiApi.FunctionTool;
+
 import org.springframework.ai.tool.function.FunctionToolCallback;
 import org.springframework.ai.tool.metadata.ToolMetadata;
 import org.slf4j.Logger;
@@ -149,17 +149,15 @@ public class MapReducePlanningTool implements Function<String, ToolExecuteResult
 
 	private static final String description = "MapReduce计划工具，用于管理支持顺序和MapReduce模式的复杂任务执行计划，MapReduce模式包含数据准备（DataPrepared）、Map和Reduce三个阶段";
 
-	public FunctionTool getToolDefinition() {
-		return new FunctionTool(new FunctionTool.Function(description, name, PARAMETERS));
-	}
+
 
 	public FunctionToolCallback<String, ToolExecuteResult> getFunctionToolCallback() {
-		return FunctionToolCallback.builder(name, this)
-			.description(description)
-			.inputSchema(PARAMETERS)
-			.inputType(String.class)
-			.toolMetadata(ToolMetadata.builder().returnDirect(true).build())
-			.build();
+		return FunctionToolCallback.<String, ToolExecuteResult>builder(name, this)
+				.description(description)
+				.inputSchema(PARAMETERS)
+				.inputType(String.class)
+				.toolMetadata(ToolMetadata.builder().returnDirect(true).build())
+				.build();
 	}
 
 	private static final ObjectMapper objectMapper = new ObjectMapper();

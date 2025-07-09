@@ -22,7 +22,7 @@ import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.chat.model.ChatModel;
-import org.springframework.ai.openai.OpenAiChatOptions;
+import org.springframework.ai.ollama.api.OllamaOptions;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -48,7 +48,7 @@ public class LlmService {
 		// Execute and summarize planning, use the same memory
 		this.planningChatClient = ChatClient.builder(chatModel)
 			.defaultAdvisors(new SimpleLoggerAdvisor())
-			.defaultOptions(OpenAiChatOptions.builder().temperature(0.1).build())
+			.defaultOptions(OllamaOptions.builder().temperature(0.1).build())
 			.build();
 
 		// Each agent execution process uses independent memory
@@ -56,7 +56,7 @@ public class LlmService {
 		this.agentExecutionClient = ChatClient.builder(chatModel)
 			// .defaultAdvisors(MessageChatMemoryAdvisor.builder(agentMemory).build())
 			.defaultAdvisors(new SimpleLoggerAdvisor())
-			.defaultOptions(OpenAiChatOptions.builder().internalToolExecutionEnabled(false).build())
+			.defaultOptions(OllamaOptions.builder().internalToolExecutionEnabled(false).build())
 			.build();
 
 		this.finalizeChatClient = ChatClient.builder(chatModel)

@@ -27,7 +27,6 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.springframework.ai.openai.api.OpenAiApi;
 
 public class GoogleSearch extends AbstractBaseTool<GoogleSearch.GoogleSearchInput> {
 
@@ -60,12 +59,6 @@ public class GoogleSearch extends AbstractBaseTool<GoogleSearch.GoogleSearchInpu
 			Use this tool when you need to find information on the web, get up-to-date data, or research specific topics.
 			The tool returns a list of URLs that match the search query.
 			""";
-
-	public static OpenAiApi.FunctionTool getToolDefinition() {
-		OpenAiApi.FunctionTool.Function function = new OpenAiApi.FunctionTool.Function(description, name, PARAMETERS);
-		OpenAiApi.FunctionTool functionTool = new OpenAiApi.FunctionTool(function);
-		return functionTool;
-	}
 
 	private static final String SERP_API_KEY = System.getenv("SERP_API_KEY");
 

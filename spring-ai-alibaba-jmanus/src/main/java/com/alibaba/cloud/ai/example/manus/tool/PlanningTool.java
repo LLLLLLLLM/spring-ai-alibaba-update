@@ -20,7 +20,6 @@ import com.alibaba.cloud.ai.example.manus.planning.model.vo.ExecutionStep;
 import com.alibaba.cloud.ai.example.manus.tool.code.ToolExecuteResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.springframework.ai.openai.api.OpenAiApi.FunctionTool;
 import org.springframework.ai.tool.function.FunctionToolCallback;
 import org.springframework.ai.tool.metadata.ToolMetadata;
 import org.slf4j.Logger;
@@ -135,9 +134,7 @@ public class PlanningTool extends AbstractBaseTool<PlanningTool.PlanningInput> i
 
 	private static final String description = "Planning tool for managing tasks ";
 
-	public FunctionTool getToolDefinition() {
-		return new FunctionTool(new FunctionTool.Function(description, name, PARAMETERS));
-	}
+
 
 	// Parameterized FunctionToolCallback with appropriate types.
 	public static FunctionToolCallback<PlanningInput, ToolExecuteResult> getFunctionToolCallback(

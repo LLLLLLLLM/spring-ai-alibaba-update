@@ -18,8 +18,7 @@ package com.alibaba.cloud.ai.example.manus.tool;
 import com.alibaba.cloud.ai.example.manus.tool.code.ToolExecuteResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import org.springframework.ai.openai.api.OpenAiApi;
+import org.springframework.ai.tool.function.FunctionToolCallback;
 
 import java.util.List;
 import java.util.Map;
@@ -38,11 +37,19 @@ public class TerminateTool extends AbstractBaseTool<Map<String, Object>> impleme
 
 	private String terminationTimestamp = "";
 
-	public static OpenAiApi.FunctionTool getToolDefinition(List<String> columns) {
+	public static FunctionToolCallback<Map<String, Object>, String> getFunctionToolCallback(List<String> columns) {
 		String parameters = generateParametersJson(columns);
 		String description = getDescriptions(columns);
-		OpenAiApi.FunctionTool.Function function = new OpenAiApi.FunctionTool.Function(description, name, parameters);
-		return new OpenAiApi.FunctionTool(function);
+		return FunctionToolCallback.<Map<String, Object>, String>builder(name, input -> {
+			TerminateTool tool = new TerminateTool(null, columns);
+			@SuppressWarnings("unchecked")
+			Map<String, Object> inputMap = (Map<String, Object>) input;
+			return tool.run(inputMap).getOutput();
+		})
+		.description(description)
+		.inputSchema(parameters)
+		.inputType(Map.class)
+		.build();
 	}
 
 	private static String getDescriptions(List<String> columns) {

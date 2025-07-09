@@ -43,8 +43,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
-import org.springframework.ai.openai.api.OpenAiApi;
-
 public class BrowserUseTool extends AbstractBaseTool<BrowserRequestVO> {
 
 	private static final Logger log = LoggerFactory.getLogger(BrowserUseTool.class);
@@ -312,12 +310,6 @@ public class BrowserUseTool extends AbstractBaseTool<BrowserRequestVO> {
 			- 'get_element_position'：通过关键词获取元素的位置坐标(x,y)
 			- 'move_to_and_click'：移动到指定的绝对位置(x,y)并点击
 			""";
-
-	public OpenAiApi.FunctionTool getToolDefinition() {
-		OpenAiApi.FunctionTool.Function function = new OpenAiApi.FunctionTool.Function(description, name, PARAMETERS);
-		OpenAiApi.FunctionTool functionTool = new OpenAiApi.FunctionTool(function);
-		return functionTool;
-	}
 
 	public static synchronized BrowserUseTool getInstance(ChromeDriverService chromeDriverService,
 			SmartContentSavingService innerStorageService) {

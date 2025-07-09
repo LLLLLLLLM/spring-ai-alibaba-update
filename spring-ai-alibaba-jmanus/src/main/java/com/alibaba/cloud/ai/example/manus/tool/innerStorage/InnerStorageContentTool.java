@@ -31,7 +31,7 @@ import com.alibaba.cloud.ai.example.manus.workflow.SummaryWorkflow;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.ai.openai.api.OpenAiApi;
+import org.springframework.ai.tool.function.FunctionToolCallback;
 
 /**
  * 内部存储内容获取工具，专门用于智能内容提取和结构化输出 支持AI智能分析和数据提取功能
@@ -191,10 +191,14 @@ public class InnerStorageContentTool extends AbstractBaseTool<InnerStorageConten
 		return "default-service-group";
 	}
 
-	public static OpenAiApi.FunctionTool getToolDefinition() {
-		OpenAiApi.FunctionTool.Function function = new OpenAiApi.FunctionTool.Function(TOOL_DESCRIPTION, TOOL_NAME,
-				PARAMETERS);
-		return new OpenAiApi.FunctionTool(function);
+	public FunctionToolCallback<InnerStorageContentInput, String> getFunctionToolCallback() {
+		return FunctionToolCallback.<InnerStorageContentInput, String>builder(TOOL_NAME, input -> {
+			return this.run(input).getOutput();
+		})
+		.description(TOOL_DESCRIPTION)
+		.inputSchema(PARAMETERS)
+		.inputType(InnerStorageContentInput.class)
+		.build();
 	}
 
 	/**

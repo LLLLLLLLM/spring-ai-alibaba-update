@@ -21,11 +21,11 @@ import com.alibaba.cloud.ai.example.manus.tool.filesystem.UnifiedDirectoryManage
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.ai.tool.function.FunctionToolCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.ai.openai.api.OpenAiApi;
 
 public class Bash extends AbstractBaseTool<Bash.BashInput> {
 
@@ -88,10 +88,14 @@ public class Bash extends AbstractBaseTool<Bash.BashInput> {
 					""",
 			osName);
 
-	public OpenAiApi.FunctionTool getToolDefinition() {
-		OpenAiApi.FunctionTool.Function function = new OpenAiApi.FunctionTool.Function(description, name, PARAMETERS);
-		OpenAiApi.FunctionTool functionTool = new OpenAiApi.FunctionTool(function);
-		return functionTool;
+	public FunctionToolCallback<BashInput, String> getFunctionToolCallback() {
+		return FunctionToolCallback.<BashInput, String>builder(name, input -> {
+			return this.run(input).getOutput();
+		})
+		.description(description)
+		.inputSchema(PARAMETERS)
+		.inputType(BashInput.class)
+		.build();
 	}
 
 	public Bash(UnifiedDirectoryManager unifiedDirectoryManager) {
