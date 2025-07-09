@@ -20,8 +20,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.ai.chat.model.ToolContext;
-import org.springframework.ai.tool.function.FunctionToolCallback;
 
 import java.util.HashMap;
 import java.util.List;
@@ -69,15 +67,10 @@ public class FormInputTool extends AbstractBaseTool<FormInputTool.UserFormInput>
 			适用于需要结构化输入的场景也可以用于模型需要等待用户输入然后再继续的场景.
 			""";
 
-	public static FunctionToolCallback<UserFormInput, ToolExecuteResult> getFunctionToolCallback() {
-		return FunctionToolCallback
-			.<UserFormInput, ToolExecuteResult>builder(name,
-					(UserFormInput input, ToolContext context) -> new FormInputTool().run(input))
-			.description(description)
-			.inputSchema(PARAMETERS)
-			.inputType(UserFormInput.class)
-			.build();
-	}
+//	public static OpenAiApi.FunctionTool getToolDefinition() {
+//		OpenAiApi.FunctionTool.Function function = new OpenAiApi.FunctionTool.Function(description, name, PARAMETERS);
+//		return new OpenAiApi.FunctionTool(function);
+//	}
 
 	// Data structures:
 	/**
