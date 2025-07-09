@@ -18,6 +18,7 @@ package com.alibaba.cloud.ai.example.manus.tool;
 import com.alibaba.cloud.ai.example.manus.tool.code.ToolExecuteResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.ai.chat.model.ToolContext;
 import org.springframework.ai.tool.function.FunctionToolCallback;
 
 import java.util.List;
@@ -37,19 +38,16 @@ public class TerminateTool extends AbstractBaseTool<Map<String, Object>> impleme
 
 	private String terminationTimestamp = "";
 
-	public static FunctionToolCallback<Map<String, Object>, String> getFunctionToolCallback(List<String> columns) {
+	public static FunctionToolCallback<Map<String, Object>, ToolExecuteResult> getFunctionToolCallback(List<String> columns) {
 		String parameters = generateParametersJson(columns);
 		String description = getDescriptions(columns);
-		return FunctionToolCallback.<Map<String, Object>, String>builder(name, input -> {
-			TerminateTool tool = new TerminateTool(null, columns);
-			@SuppressWarnings("unchecked")
-			Map<String, Object> inputMap = (Map<String, Object>) input;
-			return tool.run(inputMap).getOutput();
-		})
-		.description(description)
-		.inputSchema(parameters)
-		.inputType(Map.class)
-		.build();
+		return FunctionToolCallback
+			.<Map<String, Object>, ToolExecuteResult>builder(name,
+					(Map<String, Object> input, ToolContext context) -> new TerminateTool(null, columns).run(input))
+			.description(description)
+			.inputSchema(parameters)
+			.inputType(Map.class)
+			.build();
 	}
 
 	private static String getDescriptions(List<String> columns) {
