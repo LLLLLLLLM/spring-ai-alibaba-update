@@ -263,10 +263,10 @@ public class TextFileOperator extends AbstractBaseTool<TextFileOperator.TextFile
 
 	public FunctionToolCallback<TextFileInput, String> getFunctionToolCallback() {
 		return FunctionToolCallback.<TextFileInput, String>builder(TOOL_NAME, input -> this.run(input).getOutput())
-				.description(TOOL_DESCRIPTION)
-				.inputSchema(PARAMETERS)
-				.inputType(TextFileInput.class)
-				.build();
+			.description(TOOL_DESCRIPTION)
+			.inputSchema(PARAMETERS)
+			.inputType(TextFileInput.class)
+			.build();
 	}
 
 	public ToolExecuteResult run(String toolInput) {

@@ -26,7 +26,6 @@ import org.springframework.ai.tool.function.FunctionToolCallback;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Bash extends AbstractBaseTool<Bash.BashInput> {
 
 	private static final Logger log = LoggerFactory.getLogger(Bash.class);
@@ -91,11 +90,7 @@ public class Bash extends AbstractBaseTool<Bash.BashInput> {
 	public FunctionToolCallback<BashInput, String> getFunctionToolCallback() {
 		return FunctionToolCallback.<BashInput, String>builder(name, input -> {
 			return this.run(input).getOutput();
-		})
-		.description(description)
-		.inputSchema(PARAMETERS)
-		.inputType(BashInput.class)
-		.build();
+		}).description(description).inputSchema(PARAMETERS).inputType(BashInput.class).build();
 	}
 
 	public Bash(UnifiedDirectoryManager unifiedDirectoryManager) {

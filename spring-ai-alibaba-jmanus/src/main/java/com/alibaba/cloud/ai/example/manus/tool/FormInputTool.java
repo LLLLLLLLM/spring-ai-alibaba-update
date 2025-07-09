@@ -70,8 +70,9 @@ public class FormInputTool extends AbstractBaseTool<FormInputTool.UserFormInput>
 			""";
 
 	public static FunctionToolCallback<UserFormInput, ToolExecuteResult> getFunctionToolCallback() {
-		return FunctionToolCallback.<UserFormInput, ToolExecuteResult>builder(name,
-				(UserFormInput input, ToolContext context) -> new FormInputTool().run(input))
+		return FunctionToolCallback
+			.<UserFormInput, ToolExecuteResult>builder(name,
+					(UserFormInput input, ToolContext context) -> new FormInputTool().run(input))
 			.description(description)
 			.inputSchema(PARAMETERS)
 			.inputType(UserFormInput.class)

@@ -194,11 +194,7 @@ public class InnerStorageContentTool extends AbstractBaseTool<InnerStorageConten
 	public FunctionToolCallback<InnerStorageContentInput, String> getFunctionToolCallback() {
 		return FunctionToolCallback.<InnerStorageContentInput, String>builder(TOOL_NAME, input -> {
 			return this.run(input).getOutput();
-		})
-		.description(TOOL_DESCRIPTION)
-		.inputSchema(PARAMETERS)
-		.inputType(InnerStorageContentInput.class)
-		.build();
+		}).description(TOOL_DESCRIPTION).inputSchema(PARAMETERS).inputType(InnerStorageContentInput.class).build();
 	}
 
 	/**

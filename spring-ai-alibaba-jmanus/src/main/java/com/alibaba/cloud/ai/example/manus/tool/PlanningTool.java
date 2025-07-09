@@ -134,8 +134,6 @@ public class PlanningTool extends AbstractBaseTool<PlanningTool.PlanningInput> i
 
 	private static final String description = "Planning tool for managing tasks ";
 
-
-
 	// Parameterized FunctionToolCallback with appropriate types.
 	public static FunctionToolCallback<PlanningInput, ToolExecuteResult> getFunctionToolCallback(
 			PlanningTool toolInstance) {

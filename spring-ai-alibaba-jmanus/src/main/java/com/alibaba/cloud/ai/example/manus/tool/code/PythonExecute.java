@@ -87,10 +87,10 @@ public class PythonExecute extends AbstractBaseTool<PythonExecute.PythonInput> {
 
 	public FunctionToolCallback<PythonInput, String> getFunctionToolCallback() {
 		return FunctionToolCallback.<PythonInput, String>builder(name, input -> this.run(input).getOutput())
-				.description(description)
-				.inputSchema(PARAMETERS)
-				.inputType(PythonInput.class)
-				.build();
+			.description(description)
+			.inputSchema(PARAMETERS)
+			.inputType(PythonInput.class)
+			.build();
 	}
 
 	private String lastCode = "";

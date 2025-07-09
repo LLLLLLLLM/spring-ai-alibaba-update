@@ -92,8 +92,6 @@ public class DocLoaderTool extends AbstractBaseTool<DocLoaderTool.DocLoaderInput
 			This tool accepts the file path and gets the related information content.
 			""";
 
-
-
 	/**
 	 * Get FunctionToolCallback for Spring AI
 	 */

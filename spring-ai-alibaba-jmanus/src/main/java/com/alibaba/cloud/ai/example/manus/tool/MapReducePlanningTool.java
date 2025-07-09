@@ -149,15 +149,13 @@ public class MapReducePlanningTool implements Function<String, ToolExecuteResult
 
 	private static final String description = "MapReduce计划工具，用于管理支持顺序和MapReduce模式的复杂任务执行计划，MapReduce模式包含数据准备（DataPrepared）、Map和Reduce三个阶段";
 
-
-
 	public FunctionToolCallback<String, ToolExecuteResult> getFunctionToolCallback() {
 		return FunctionToolCallback.<String, ToolExecuteResult>builder(name, this)
-				.description(description)
-				.inputSchema(PARAMETERS)
-				.inputType(String.class)
-				.toolMetadata(ToolMetadata.builder().returnDirect(true).build())
-				.build();
+			.description(description)
+			.inputSchema(PARAMETERS)
+			.inputType(String.class)
+			.toolMetadata(ToolMetadata.builder().returnDirect(true).build())
+			.build();
 	}
 
 	private static final ObjectMapper objectMapper = new ObjectMapper();

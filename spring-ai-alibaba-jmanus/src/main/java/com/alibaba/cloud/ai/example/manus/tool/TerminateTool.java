@@ -38,7 +38,8 @@ public class TerminateTool extends AbstractBaseTool<Map<String, Object>> impleme
 
 	private String terminationTimestamp = "";
 
-	public static FunctionToolCallback<Map<String, Object>, ToolExecuteResult> getFunctionToolCallback(List<String> columns) {
+	public static FunctionToolCallback<Map<String, Object>, ToolExecuteResult> getFunctionToolCallback(
+			List<String> columns) {
 		String parameters = generateParametersJson(columns);
 		String description = getDescriptions(columns);
 		return FunctionToolCallback
