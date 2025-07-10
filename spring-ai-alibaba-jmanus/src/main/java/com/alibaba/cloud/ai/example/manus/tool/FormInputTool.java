@@ -71,7 +71,8 @@ public class FormInputTool extends AbstractBaseTool<FormInputTool.UserFormInput>
 			""";
 
 	public static OllamaApi.ChatRequest.Tool getToolDefinition() {
-		return new OllamaApi.ChatRequest.Tool(new OllamaApi.ChatRequest.Tool.Function(name, description, ModelOptionsUtils.jsonToMap(PARAMETERS)));
+		return new OllamaApi.ChatRequest.Tool(
+				new OllamaApi.ChatRequest.Tool.Function(name, description, ModelOptionsUtils.jsonToMap(PARAMETERS)));
 	}
 
 	// Data structures:

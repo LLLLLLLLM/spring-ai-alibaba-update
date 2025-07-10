@@ -192,15 +192,16 @@ public class InnerStorageContentTool extends AbstractBaseTool<InnerStorageConten
 		return "default-service-group";
 	}
 
-//	public static OpenAiApi.FunctionTool getToolDefinition() {
-//		OpenAiApi.FunctionTool.Function function = new OpenAiApi.FunctionTool.Function(TOOL_DESCRIPTION, TOOL_NAME,
-//				PARAMETERS);
-//		return new OpenAiApi.FunctionTool(function);
-//	}
+	// public static OpenAiApi.FunctionTool getToolDefinition() {
+	// OpenAiApi.FunctionTool.Function function = new
+	// OpenAiApi.FunctionTool.Function(TOOL_DESCRIPTION, TOOL_NAME,
+	// PARAMETERS);
+	// return new OpenAiApi.FunctionTool(function);
+	// }
 
 	public static OllamaApi.ChatRequest.Tool getToolDefinition() {
-		OllamaApi.ChatRequest.Tool.Function function = new OllamaApi.ChatRequest.Tool.Function(TOOL_DESCRIPTION, TOOL_NAME,
-				PARAMETERS);
+		OllamaApi.ChatRequest.Tool.Function function = new OllamaApi.ChatRequest.Tool.Function(TOOL_DESCRIPTION,
+				TOOL_NAME, PARAMETERS);
 		return new OllamaApi.ChatRequest.Tool(function);
 	}
 

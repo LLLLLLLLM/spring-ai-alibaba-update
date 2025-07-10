@@ -508,8 +508,8 @@ public class MapReduceTool extends AbstractBaseTool<MapReduceTool.MapReduceInput
 
 	public static OllamaApi.ChatRequest.Tool getToolDefinition(List<String> terminateColumns) {
 		String parameters = generateParametersJson(terminateColumns);
-		OllamaApi.ChatRequest.Tool.Function function = new OllamaApi.ChatRequest.Tool.Function(TOOL_DESCRIPTION, TOOL_NAME,
-				parameters);
+		OllamaApi.ChatRequest.Tool.Function function = new OllamaApi.ChatRequest.Tool.Function(TOOL_DESCRIPTION,
+				TOOL_NAME, parameters);
 		return new OllamaApi.ChatRequest.Tool(function);
 	}
 

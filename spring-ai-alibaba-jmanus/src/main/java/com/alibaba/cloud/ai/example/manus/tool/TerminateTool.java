@@ -42,7 +42,8 @@ public class TerminateTool extends AbstractBaseTool<Map<String, Object>> impleme
 	public static OllamaApi.ChatRequest.Tool getToolDefinition(List<String> columns) {
 		String parameters = generateParametersJson(columns);
 		String description = getDescriptions(columns);
-		return new OllamaApi.ChatRequest.Tool(new OllamaApi.ChatRequest.Tool.Function(name, description, ModelOptionsUtils.jsonToMap(parameters)));
+		return new OllamaApi.ChatRequest.Tool(
+				new OllamaApi.ChatRequest.Tool.Function(name, description, ModelOptionsUtils.jsonToMap(parameters)));
 	}
 
 	private static String getDescriptions(List<String> columns) {

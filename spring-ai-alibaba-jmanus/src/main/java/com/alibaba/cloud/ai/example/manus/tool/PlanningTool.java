@@ -136,9 +136,9 @@ public class PlanningTool extends AbstractBaseTool<PlanningTool.PlanningInput> i
 
 	private static final String description = "Planning tool for managing tasks ";
 
-//	public FunctionTool getToolDefinition() {
-//		return new FunctionTool(new FunctionTool.Function(description, name, PARAMETERS));
-//	}
+	// public FunctionTool getToolDefinition() {
+	// return new FunctionTool(new FunctionTool.Function(description, name, PARAMETERS));
+	// }
 
 	public OllamaApi.ChatRequest.Tool getToolDefinition() {
 		return new OllamaApi.ChatRequest.Tool(new OllamaApi.ChatRequest.Tool.Function(description, name, PARAMETERS));

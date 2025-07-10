@@ -62,14 +62,16 @@ public class GoogleSearch extends AbstractBaseTool<GoogleSearch.GoogleSearchInpu
 			The tool returns a list of URLs that match the search query.
 			""";
 
-//	public static OpenAiApi.FunctionTool getToolDefinition() {
-//		OpenAiApi.FunctionTool.Function function = new OpenAiApi.FunctionTool.Function(description, name, PARAMETERS);
-//		OpenAiApi.FunctionTool functionTool = new OpenAiApi.FunctionTool(function);
-//		return functionTool;
-//	}
+	// public static OpenAiApi.FunctionTool getToolDefinition() {
+	// OpenAiApi.FunctionTool.Function function = new
+	// OpenAiApi.FunctionTool.Function(description, name, PARAMETERS);
+	// OpenAiApi.FunctionTool functionTool = new OpenAiApi.FunctionTool(function);
+	// return functionTool;
+	// }
 
 	public static OllamaApi.ChatRequest.Tool getToolDefinition() {
-		OllamaApi.ChatRequest.Tool.Function function = new OllamaApi.ChatRequest.Tool.Function(description, name, PARAMETERS);
+		OllamaApi.ChatRequest.Tool.Function function = new OllamaApi.ChatRequest.Tool.Function(description, name,
+				PARAMETERS);
 		OllamaApi.ChatRequest.Tool functionTool = new OllamaApi.ChatRequest.Tool(function);
 		return functionTool;
 	}

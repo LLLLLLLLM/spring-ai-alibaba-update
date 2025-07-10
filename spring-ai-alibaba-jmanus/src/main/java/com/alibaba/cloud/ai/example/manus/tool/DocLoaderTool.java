@@ -95,7 +95,8 @@ public class DocLoaderTool extends AbstractBaseTool<DocLoaderTool.DocLoaderInput
 			""";
 
 	public static OllamaApi.ChatRequest.Tool getToolDefinition() {
-		OllamaApi.ChatRequest.Tool.Function function = new OllamaApi.ChatRequest.Tool.Function(description, name, PARAMETERS);
+		OllamaApi.ChatRequest.Tool.Function function = new OllamaApi.ChatRequest.Tool.Function(description, name,
+				PARAMETERS);
 		OllamaApi.ChatRequest.Tool functionTool = new OllamaApi.ChatRequest.Tool(function);
 		return functionTool;
 	}

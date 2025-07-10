@@ -86,14 +86,16 @@ public class PythonExecute extends AbstractBaseTool<PythonExecute.PythonInput> {
 			Executes Python code string. Note: Only print outputs are visible, function return values are not captured. Use print statements to see results.
 			""";
 
-//	public static OpenAiApi.FunctionTool getToolDefinition() {
-//		OpenAiApi.FunctionTool.Function function = new OpenAiApi.FunctionTool.Function(description, name, PARAMETERS);
-//		OpenAiApi.FunctionTool functionTool = new OpenAiApi.FunctionTool(function);
-//		return functionTool;
-//	}
+	// public static OpenAiApi.FunctionTool getToolDefinition() {
+	// OpenAiApi.FunctionTool.Function function = new
+	// OpenAiApi.FunctionTool.Function(description, name, PARAMETERS);
+	// OpenAiApi.FunctionTool functionTool = new OpenAiApi.FunctionTool(function);
+	// return functionTool;
+	// }
 
 	public static OllamaApi.ChatRequest.Tool getToolDefinition() {
-		OllamaApi.ChatRequest.Tool.Function function = new OllamaApi.ChatRequest.Tool.Function(description, name, PARAMETERS);
+		OllamaApi.ChatRequest.Tool.Function function = new OllamaApi.ChatRequest.Tool.Function(description, name,
+				PARAMETERS);
 		OllamaApi.ChatRequest.Tool functionTool = new OllamaApi.ChatRequest.Tool(function);
 		return functionTool;
 	}

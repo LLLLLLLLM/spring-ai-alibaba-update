@@ -262,16 +262,17 @@ public class TextFileOperator extends AbstractBaseTool<TextFileOperator.TextFile
 			每个操作都有严格的参数要求，确保操作的准确性和安全性。
 			""";
 
-//	public OpenAiApi.FunctionTool getToolDefinition() {
-//		OpenAiApi.FunctionTool.Function function = new OpenAiApi.FunctionTool.Function(TOOL_DESCRIPTION, TOOL_NAME,
-//				PARAMETERS);
-//		OpenAiApi.FunctionTool functionTool = new OpenAiApi.FunctionTool(function);
-//		return functionTool;
-//	}
+	// public OpenAiApi.FunctionTool getToolDefinition() {
+	// OpenAiApi.FunctionTool.Function function = new
+	// OpenAiApi.FunctionTool.Function(TOOL_DESCRIPTION, TOOL_NAME,
+	// PARAMETERS);
+	// OpenAiApi.FunctionTool functionTool = new OpenAiApi.FunctionTool(function);
+	// return functionTool;
+	// }
 
 	public OllamaApi.ChatRequest.Tool getToolDefinition() {
-		OllamaApi.ChatRequest.Tool.Function function = new OllamaApi.ChatRequest.Tool.Function(TOOL_DESCRIPTION, TOOL_NAME,
-				PARAMETERS);
+		OllamaApi.ChatRequest.Tool.Function function = new OllamaApi.ChatRequest.Tool.Function(TOOL_DESCRIPTION,
+				TOOL_NAME, PARAMETERS);
 		OllamaApi.ChatRequest.Tool functionTool = new OllamaApi.ChatRequest.Tool(function);
 		return functionTool;
 	}
