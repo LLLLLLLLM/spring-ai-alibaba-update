@@ -22,8 +22,8 @@ import com.microsoft.playwright.options.LoadState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -412,12 +412,12 @@ public class InteractiveElementRegistry {
 	/**
 	 * A list of all interactive elements, sorted by global index
 	 */
-	private final List<InteractiveElement> interactiveElements = new ArrayList<>();
+	private final List<InteractiveElement> interactiveElements = new CopyOnWriteArrayList<>();
 
 	/**
 	 * A quick lookup from index to element
 	 */
-	private final Map<Integer, InteractiveElement> indexToElementMap = new HashMap<>();
+	private final Map<Integer, InteractiveElement> indexToElementMap = new ConcurrentHashMap<>();
 
 	/**
 	 * Refresh all interactive elements on the specified page
@@ -462,7 +462,7 @@ public class InteractiveElementRegistry {
 			int index = 0;
 			for (Frame frame : page.frames()) {
 				List<Map<String, Object>> elementMapList = (List<Map<String, Object>>) frame
-						.evaluate(EXTRACT_INTERACTIVE_ELEMENTS_JS, index);
+					.evaluate(EXTRACT_INTERACTIVE_ELEMENTS_JS, index);
 				for (Map<String, Object> elementMap : elementMapList) {
 					Integer globalIndex = (Integer) elementMap.get("index");
 					InteractiveElement element = new InteractiveElement(globalIndex, frame, elementMap);
@@ -484,7 +484,7 @@ public class InteractiveElementRegistry {
 	 */
 	public List<InteractiveElement> getAllElements(Page page) {
 		refresh(page);
-		return new ArrayList<>(interactiveElements);
+		return new CopyOnWriteArrayList<>(interactiveElements);
 	}
 
 	/**
