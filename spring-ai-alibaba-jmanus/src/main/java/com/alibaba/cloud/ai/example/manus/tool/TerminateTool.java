@@ -18,8 +18,9 @@ package com.alibaba.cloud.ai.example.manus.tool;
 import com.alibaba.cloud.ai.example.manus.tool.code.ToolExecuteResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.ai.chat.model.ToolContext;
-import org.springframework.ai.tool.function.FunctionToolCallback;
+
+import org.springframework.ai.model.ModelOptionsUtils;
+import org.springframework.ai.ollama.api.OllamaApi;
 
 import java.util.List;
 import java.util.Map;
@@ -38,17 +39,10 @@ public class TerminateTool extends AbstractBaseTool<Map<String, Object>> impleme
 
 	private String terminationTimestamp = "";
 
-	public static FunctionToolCallback<Map<String, Object>, ToolExecuteResult> getFunctionToolCallback(
-			List<String> columns) {
+	public static OllamaApi.ChatRequest.Tool getToolDefinition(List<String> columns) {
 		String parameters = generateParametersJson(columns);
 		String description = getDescriptions(columns);
-		return FunctionToolCallback
-			.<Map<String, Object>, ToolExecuteResult>builder(name,
-					(Map<String, Object> input, ToolContext context) -> new TerminateTool(null, columns).run(input))
-			.description(description)
-			.inputSchema(parameters)
-			.inputType(Map.class)
-			.build();
+		return new OllamaApi.ChatRequest.Tool(new OllamaApi.ChatRequest.Tool.Function(name, description, ModelOptionsUtils.jsonToMap(parameters)));
 	}
 
 	private static String getDescriptions(List<String> columns) {

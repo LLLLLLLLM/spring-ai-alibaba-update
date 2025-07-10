@@ -38,10 +38,13 @@ import com.alibaba.cloud.ai.example.manus.tool.innerStorage.SmartContentSavingSe
 import com.microsoft.playwright.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.ai.ollama.api.OllamaApi;
 
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+
+//import org.springframework.ai.openai.api.OpenAiApi;
 
 public class BrowserUseTool extends AbstractBaseTool<BrowserRequestVO> {
 
@@ -310,6 +313,12 @@ public class BrowserUseTool extends AbstractBaseTool<BrowserRequestVO> {
 			- 'get_element_position'：通过关键词获取元素的位置坐标(x,y)
 			- 'move_to_and_click'：移动到指定的绝对位置(x,y)并点击
 			""";
+
+	public OllamaApi.ChatRequest.Tool getToolDefinition() {
+		OllamaApi.ChatRequest.Tool.Function function = new OllamaApi.ChatRequest.Tool.Function(description, name, PARAMETERS);
+		OllamaApi.ChatRequest.Tool functionTool = new OllamaApi.ChatRequest.Tool(function);
+		return functionTool;
+	}
 
 	public static synchronized BrowserUseTool getInstance(ChromeDriverService chromeDriverService,
 			SmartContentSavingService innerStorageService) {

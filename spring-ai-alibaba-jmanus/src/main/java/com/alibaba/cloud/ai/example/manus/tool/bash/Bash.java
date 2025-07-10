@@ -21,10 +21,12 @@ import com.alibaba.cloud.ai.example.manus.tool.filesystem.UnifiedDirectoryManage
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.ai.tool.function.FunctionToolCallback;
+import org.springframework.ai.ollama.api.OllamaApi;
 
 import java.util.ArrayList;
 import java.util.List;
+
+//import org.springframework.ai.openai.api.OpenAiApi;
 
 public class Bash extends AbstractBaseTool<Bash.BashInput> {
 
@@ -87,10 +89,16 @@ public class Bash extends AbstractBaseTool<Bash.BashInput> {
 					""",
 			osName);
 
-	public FunctionToolCallback<BashInput, String> getFunctionToolCallback() {
-		return FunctionToolCallback.<BashInput, String>builder(name, input -> {
-			return this.run(input).getOutput();
-		}).description(description).inputSchema(PARAMETERS).inputType(BashInput.class).build();
+//	public OpenAiApi.FunctionTool getToolDefinition() {
+//		OpenAiApi.FunctionTool.Function function = new OpenAiApi.FunctionTool.Function(description, name, PARAMETERS);
+//		OpenAiApi.FunctionTool functionTool = new OpenAiApi.FunctionTool(function);
+//		return functionTool;
+//	}
+
+	public OllamaApi.ChatRequest.Tool getToolDefinition() {
+		OllamaApi.ChatRequest.Tool.Function function = new OllamaApi.ChatRequest.Tool.Function(description, name, PARAMETERS);
+		OllamaApi.ChatRequest.Tool functionTool = new OllamaApi.ChatRequest.Tool(function);
+		return functionTool;
 	}
 
 	public Bash(UnifiedDirectoryManager unifiedDirectoryManager) {

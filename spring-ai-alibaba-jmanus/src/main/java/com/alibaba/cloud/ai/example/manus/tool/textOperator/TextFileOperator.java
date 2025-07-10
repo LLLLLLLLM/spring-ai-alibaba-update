@@ -26,10 +26,11 @@ import com.alibaba.cloud.ai.example.manus.tool.innerStorage.SmartContentSavingSe
 import com.alibaba.cloud.ai.example.manus.tool.filesystem.UnifiedDirectoryManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
-import org.springframework.ai.tool.function.FunctionToolCallback;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.ai.ollama.api.OllamaApi;
+//import org.springframework.ai.openai.api.OpenAiApi;
 
 public class TextFileOperator extends AbstractBaseTool<TextFileOperator.TextFileInput> {
 
@@ -261,12 +262,18 @@ public class TextFileOperator extends AbstractBaseTool<TextFileOperator.TextFile
 			每个操作都有严格的参数要求，确保操作的准确性和安全性。
 			""";
 
-	public FunctionToolCallback<TextFileInput, String> getFunctionToolCallback() {
-		return FunctionToolCallback.<TextFileInput, String>builder(TOOL_NAME, input -> this.run(input).getOutput())
-			.description(TOOL_DESCRIPTION)
-			.inputSchema(PARAMETERS)
-			.inputType(TextFileInput.class)
-			.build();
+//	public OpenAiApi.FunctionTool getToolDefinition() {
+//		OpenAiApi.FunctionTool.Function function = new OpenAiApi.FunctionTool.Function(TOOL_DESCRIPTION, TOOL_NAME,
+//				PARAMETERS);
+//		OpenAiApi.FunctionTool functionTool = new OpenAiApi.FunctionTool(function);
+//		return functionTool;
+//	}
+
+	public OllamaApi.ChatRequest.Tool getToolDefinition() {
+		OllamaApi.ChatRequest.Tool.Function function = new OllamaApi.ChatRequest.Tool.Function(TOOL_DESCRIPTION, TOOL_NAME,
+				PARAMETERS);
+		OllamaApi.ChatRequest.Tool functionTool = new OllamaApi.ChatRequest.Tool(function);
+		return functionTool;
 	}
 
 	public ToolExecuteResult run(String toolInput) {

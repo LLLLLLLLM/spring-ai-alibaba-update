@@ -20,6 +20,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.ai.model.ModelOptionsUtils;
+import org.springframework.ai.ollama.api.OllamaApi;
+//import org.springframework.ai.openai.api.OpenAiApi;
 
 import java.util.HashMap;
 import java.util.List;
@@ -67,10 +70,9 @@ public class FormInputTool extends AbstractBaseTool<FormInputTool.UserFormInput>
 			适用于需要结构化输入的场景也可以用于模型需要等待用户输入然后再继续的场景.
 			""";
 
-//	public static OpenAiApi.FunctionTool getToolDefinition() {
-//		OpenAiApi.FunctionTool.Function function = new OpenAiApi.FunctionTool.Function(description, name, PARAMETERS);
-//		return new OpenAiApi.FunctionTool(function);
-//	}
+	public static OllamaApi.ChatRequest.Tool getToolDefinition() {
+		return new OllamaApi.ChatRequest.Tool(new OllamaApi.ChatRequest.Tool.Function(name, description, ModelOptionsUtils.jsonToMap(PARAMETERS)));
+	}
 
 	// Data structures:
 	/**

@@ -18,13 +18,14 @@ package com.alibaba.cloud.ai.example.manus.tool.code;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.alibaba.cloud.ai.example.manus.tool.AbstractBaseTool;
-import org.springframework.ai.tool.function.FunctionToolCallback;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.ai.ollama.api.OllamaApi;
 
 import java.util.HashMap;
 import java.util.Map;
+//import org.springframework.ai.openai.api.OpenAiApi;
 
 public class PythonExecute extends AbstractBaseTool<PythonExecute.PythonInput> {
 
@@ -85,12 +86,16 @@ public class PythonExecute extends AbstractBaseTool<PythonExecute.PythonInput> {
 			Executes Python code string. Note: Only print outputs are visible, function return values are not captured. Use print statements to see results.
 			""";
 
-	public FunctionToolCallback<PythonInput, String> getFunctionToolCallback() {
-		return FunctionToolCallback.<PythonInput, String>builder(name, input -> this.run(input).getOutput())
-			.description(description)
-			.inputSchema(PARAMETERS)
-			.inputType(PythonInput.class)
-			.build();
+//	public static OpenAiApi.FunctionTool getToolDefinition() {
+//		OpenAiApi.FunctionTool.Function function = new OpenAiApi.FunctionTool.Function(description, name, PARAMETERS);
+//		OpenAiApi.FunctionTool functionTool = new OpenAiApi.FunctionTool(function);
+//		return functionTool;
+//	}
+
+	public static OllamaApi.ChatRequest.Tool getToolDefinition() {
+		OllamaApi.ChatRequest.Tool.Function function = new OllamaApi.ChatRequest.Tool.Function(description, name, PARAMETERS);
+		OllamaApi.ChatRequest.Tool functionTool = new OllamaApi.ChatRequest.Tool(function);
+		return functionTool;
 	}
 
 	private String lastCode = "";

@@ -29,13 +29,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class ModelDataInitialization {
 
-	@Value("${spring.ai.openai.base-url}")
+	@Value("${spring.ai.ollama.base-url}")
 	private String baseUrl;
 
-	@Value("${spring.ai.openai.api-key}")
-	private String apiKey;
+	private String apiKey = "ML";
 
-	@Value("${spring.ai.openai.chat.options.model}")
+	@Value("${spring.ai.ollama.chat.options.model}")
 	private String model;
 
 	private final DynamicModelRepository repository;

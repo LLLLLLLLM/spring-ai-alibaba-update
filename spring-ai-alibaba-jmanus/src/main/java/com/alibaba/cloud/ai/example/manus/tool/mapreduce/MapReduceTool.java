@@ -31,7 +31,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.model.ToolContext;
-import org.springframework.ai.tool.function.FunctionToolCallback;
+import org.springframework.ai.ollama.api.OllamaApi;
+//import org.springframework.ai.openai.api.OpenAiApi;
 
 /**
  * Data split tool for MapReduce workflow data preparation phase Responsible for
@@ -500,12 +501,16 @@ public class MapReduceTool extends AbstractBaseTool<MapReduceTool.MapReduceInput
 		return "data-processing";
 	}
 
-	public FunctionToolCallback<MapReduceInput, String> getFunctionToolCallback() {
-		return FunctionToolCallback.<MapReduceInput, String>builder(TOOL_NAME, input -> this.run(input).getOutput())
-			.description(TOOL_DESCRIPTION)
-			.inputType(MapReduceInput.class)
-			.inputSchema(generateParametersJson(terminateColumns))
-			.build();
+	public static OllamaApi.ChatRequest.Tool getToolDefinition() {
+		// Use default terminate columns for static tool definition
+		return getToolDefinition(null);
+	}
+
+	public static OllamaApi.ChatRequest.Tool getToolDefinition(List<String> terminateColumns) {
+		String parameters = generateParametersJson(terminateColumns);
+		OllamaApi.ChatRequest.Tool.Function function = new OllamaApi.ChatRequest.Tool.Function(TOOL_DESCRIPTION, TOOL_NAME,
+				parameters);
+		return new OllamaApi.ChatRequest.Tool(function);
 	}
 
 	/**
