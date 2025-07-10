@@ -187,7 +187,8 @@ public class PlanningFactory {
 		List<ToolCallBiFunctionDef<?>> toolDefinitions = new ArrayList<>();
 
 		// Add all tool definitions
-		//toolDefinitions.add(BrowserUseTool.getInstance(chromeDriverService, innerStorageService));
+		// toolDefinitions.add(BrowserUseTool.getInstance(chromeDriverService,
+		// innerStorageService));
 		toolDefinitions.add(new TerminateTool(planId, terminateColumns));
 		toolDefinitions.add(new Bash(unifiedDirectoryManager));
 		toolDefinitions.add(new DocLoaderTool());
