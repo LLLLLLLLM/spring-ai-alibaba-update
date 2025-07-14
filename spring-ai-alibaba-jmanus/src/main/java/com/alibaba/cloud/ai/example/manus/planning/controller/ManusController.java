@@ -26,7 +26,6 @@ import com.alibaba.cloud.ai.example.manus.recorder.entity.PlanExecutionRecord;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,7 +116,7 @@ public class ManusController {
 	 */
 	@GetMapping("/details/{planId}")
 	public synchronized ResponseEntity<?> getExecutionDetails(@PathVariable("planId") String planId) {
-		PlanExecutionRecord planRecord = planExecutionRecorder.getExecutionRecord(null, planId, null);
+		PlanExecutionRecord planRecord = planExecutionRecorder.getRootPlanExecutionRecord(planId);
 
 		if (planRecord == null) {
 			return ResponseEntity.notFound().build();
@@ -155,7 +154,7 @@ public class ManusController {
 	 */
 	@DeleteMapping("/details/{planId}")
 	public ResponseEntity<Map<String, String>> removeExecutionDetails(@PathVariable("planId") String planId) {
-		PlanExecutionRecord planRecord = planExecutionRecorder.getExecutionRecord(null, planId, null);
+		PlanExecutionRecord planRecord = planExecutionRecorder.getRootPlanExecutionRecord(planId);
 		if (planRecord == null) {
 			return ResponseEntity.notFound().build();
 		}

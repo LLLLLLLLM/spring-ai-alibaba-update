@@ -15,24 +15,19 @@
  */
 package com.alibaba.cloud.ai.example.manus.tool.innerStorage;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
-
 import com.alibaba.cloud.ai.example.manus.recorder.PlanExecutionRecorder;
-import com.alibaba.cloud.ai.example.manus.recorder.entity.AgentExecutionRecord;
-import com.alibaba.cloud.ai.example.manus.recorder.entity.PlanExecutionRecord;
-import com.alibaba.cloud.ai.example.manus.recorder.entity.ThinkActRecord;
 import com.alibaba.cloud.ai.example.manus.tool.AbstractBaseTool;
 import com.alibaba.cloud.ai.example.manus.tool.code.ToolExecuteResult;
 import com.alibaba.cloud.ai.example.manus.tool.filesystem.UnifiedDirectoryManager;
 import com.alibaba.cloud.ai.example.manus.workflow.SummaryWorkflow;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.ollama.api.OllamaApi;
-//import org.springframework.ai.openai.api.OpenAiApi;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
 
 /**
  * 内部存储内容获取工具，专门用于智能内容提取和结构化输出 支持AI智能分析和数据提取功能
@@ -122,7 +117,7 @@ public class InnerStorageContentTool extends AbstractBaseTool<InnerStorageConten
 	private final PlanExecutionRecorder planExecutionRecorder;
 
 	public InnerStorageContentTool(UnifiedDirectoryManager directoryManager, SummaryWorkflow summaryWorkflow,
-			PlanExecutionRecorder planExecutionRecorder) {
+                                   PlanExecutionRecorder planExecutionRecorder) {
 		this.directoryManager = directoryManager;
 		this.summaryWorkflow = summaryWorkflow;
 		this.planExecutionRecorder = planExecutionRecorder;
@@ -192,16 +187,9 @@ public class InnerStorageContentTool extends AbstractBaseTool<InnerStorageConten
 		return "default-service-group";
 	}
 
-	// public static OpenAiApi.FunctionTool getToolDefinition() {
-	// OpenAiApi.FunctionTool.Function function = new
-	// OpenAiApi.FunctionTool.Function(TOOL_DESCRIPTION, TOOL_NAME,
-	// PARAMETERS);
-	// return new OpenAiApi.FunctionTool(function);
-	// }
-
 	public static OllamaApi.ChatRequest.Tool getToolDefinition() {
-		OllamaApi.ChatRequest.Tool.Function function = new OllamaApi.ChatRequest.Tool.Function(TOOL_DESCRIPTION,
-				TOOL_NAME, PARAMETERS);
+		OllamaApi.ChatRequest.Tool.Function function = new OllamaApi.ChatRequest.Tool.Function(TOOL_DESCRIPTION, TOOL_NAME,
+				PARAMETERS);
 		return new OllamaApi.ChatRequest.Tool(function);
 	}
 
@@ -276,16 +264,13 @@ public class InnerStorageContentTool extends AbstractBaseTool<InnerStorageConten
 	 */
 	private Long getCurrentThinkActRecordId() {
 		try {
-			// 获取当前计划的执行记录
-			PlanExecutionRecord record = planExecutionRecorder.getExecutionRecord(currentPlanId, rootPlanId, null);
-			AgentExecutionRecord currentAgentRecord = planExecutionRecorder.getCurrentAgentExecutionRecord(record);
-
-			if (currentAgentRecord != null && currentAgentRecord.getThinkActSteps() != null
-					&& !currentAgentRecord.getThinkActSteps().isEmpty()) {
-				// 获取最后一个 think-act 记录（当前正在执行的）
-				List<ThinkActRecord> steps = currentAgentRecord.getThinkActSteps();
-				ThinkActRecord lastStep = steps.get(steps.size() - 1);
-				return lastStep.getId();
+			Long thinkActRecordId = planExecutionRecorder.getCurrentThinkActRecordId(currentPlanId, rootPlanId);
+			if (thinkActRecordId != null) {
+				log.info("当前 think-act 记录ID: {}", thinkActRecordId);
+				return thinkActRecordId;
+			}
+			else {
+				log.warn("当前没有 think-act 记录ID");
 			}
 		}
 		catch (Exception e) {

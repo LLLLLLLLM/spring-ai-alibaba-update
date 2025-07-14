@@ -15,9 +15,6 @@
  */
 package com.alibaba.cloud.ai.example.manus.planning.finalizer;
 
-import java.util.List;
-import java.util.Map;
-
 import com.alibaba.cloud.ai.example.manus.config.ManusProperties;
 import com.alibaba.cloud.ai.example.manus.dynamic.prompt.model.enums.PromptEnum;
 import com.alibaba.cloud.ai.example.manus.dynamic.prompt.service.PromptService;
@@ -25,7 +22,6 @@ import com.alibaba.cloud.ai.example.manus.llm.LlmService;
 import com.alibaba.cloud.ai.example.manus.planning.model.vo.ExecutionContext;
 import com.alibaba.cloud.ai.example.manus.planning.model.vo.PlanInterface;
 import com.alibaba.cloud.ai.example.manus.recorder.PlanExecutionRecorder;
-import com.alibaba.cloud.ai.example.manus.recorder.entity.PlanExecutionRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
@@ -33,6 +29,9 @@ import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
+
+import java.util.List;
+import java.util.Map;
 
 import static org.springframework.ai.chat.memory.ChatMemory.CONVERSATION_ID;
 
@@ -52,7 +51,7 @@ public class PlanFinalizer {
 	private final ManusProperties manusProperties;
 
 	public PlanFinalizer(LlmService llmService, PlanExecutionRecorder recorder, PromptService promptService,
-			ManusProperties manusProperties) {
+                         ManusProperties manusProperties) {
 		this.llmService = llmService;
 		this.recorder = recorder;
 		this.promptService = promptService;
@@ -113,20 +112,21 @@ public class PlanFinalizer {
 	}
 
 	/**
-	 * Record plan completion
-	 * @param context The execution context
-	 * @param summary The summary of the plan execution
+	 * Record plan completion with the given context and summary
+	 * @param context Execution context
+	 * @param summary Plan execution summary
 	 */
 	private void recordPlanCompletion(ExecutionContext context, String summary) {
-		// Use thinkActRecordId from context to support sub-plan executions
-		PlanExecutionRecord planRecord = recorder.getExecutionRecord(context.getPlan().getCurrentPlanId(),
-				context.getPlan().getRootPlanId(), context.getThinkActRecordId());
-		if (planRecord != null) {
-			recorder.recordPlanCompletion(planRecord, summary);
+		if (context == null || context.getPlan() == null) {
+			log.warn("Cannot record plan completion: context or plan is null");
+			return;
 		}
 
-		log.info("Plan completed with ID: {} (thinkActRecordId: {}) and summary: {}",
-				context.getPlan().getCurrentPlanId(), context.getThinkActRecordId(), summary);
+		String currentPlanId = context.getPlan().getCurrentPlanId();
+		String rootPlanId = context.getPlan().getRootPlanId();
+		Long thinkActRecordId = context.getThinkActRecordId();
+
+		recorder.recordPlanCompletion(currentPlanId, rootPlanId, thinkActRecordId, summary);
 	}
 
 }

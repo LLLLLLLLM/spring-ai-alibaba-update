@@ -16,10 +16,11 @@
 
 package com.alibaba.cloud.ai.example.manus.recorder.entity;
 
+import com.alibaba.cloud.ai.example.manus.planning.model.vo.UserInputWaitState;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import com.alibaba.cloud.ai.example.manus.planning.model.vo.UserInputWaitState; // Added import
 
 /**
  * Plan execution record class for tracking and recording detailed information about
@@ -101,6 +102,8 @@ public class PlanExecutionRecord {
 		// default constructor
 		this.completed = false;
 		this.agentExecutionSequence = new ArrayList<>();
+		// Ensure ID is generated during initialization
+		this.id = generateId();
 	}
 
 	/**
@@ -114,6 +117,8 @@ public class PlanExecutionRecord {
 		this.startTime = LocalDateTime.now();
 		this.completed = false;
 		this.agentExecutionSequence = new ArrayList<>();
+		// Ensure ID is generated during initialization
+		this.id = generateId();
 	}
 
 	/**
@@ -155,6 +160,20 @@ public class PlanExecutionRecord {
 	}
 
 	/**
+	 * Generate unique ID if not already set
+	 * @return Generated or existing ID
+	 */
+	private Long generateId() {
+		if (this.id == null) {
+			// Use combination of timestamp and random number to generate ID
+			long timestamp = System.currentTimeMillis();
+			int random = (int) (Math.random() * 1000000);
+			this.id = timestamp * 1000 + random;
+		}
+		return this.id;
+	}
+
+	/**
 	 * Save record to persistent storage. Empty implementation, to be overridden by
 	 * specific storage implementations. Also recursively saves all AgentExecutionRecord
 	 * @return Record ID after saving
@@ -180,6 +199,10 @@ public class PlanExecutionRecord {
 	// Getters and Setters
 
 	public Long getId() {
+		// Ensure ID is generated when accessing
+		if (this.id == null) {
+			this.id = generateId();
+		}
 		return id;
 	}
 
