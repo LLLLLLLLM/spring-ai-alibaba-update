@@ -184,7 +184,7 @@ public abstract class BaseAgent {
 	public abstract ToolCallBackContext getToolCallBackContext(String toolKey);
 
 	public BaseAgent(LlmService llmService, PlanExecutionRecorder planExecutionRecorder,
-                     ManusProperties manusProperties, Map<String, Object> initialAgentSetting, PromptService promptService) {
+			ManusProperties manusProperties, Map<String, Object> initialAgentSetting, PromptService promptService) {
 		this.llmService = llmService;
 		this.planExecutionRecorder = planExecutionRecorder;
 		this.manusProperties = manusProperties;

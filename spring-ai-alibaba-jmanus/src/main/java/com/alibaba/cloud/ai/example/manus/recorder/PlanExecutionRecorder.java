@@ -46,8 +46,7 @@ public interface PlanExecutionRecorder {
 	 * @param step Execution step
 	 * @param context Execution context
 	 */
-	void recordStepEnd(ExecutionStep step,
-                       ExecutionContext context);
+	void recordStepEnd(ExecutionStep step, ExecutionContext context);
 
 	/**
 	 * Record the start of plan execution.

@@ -51,7 +51,7 @@ public class PlanFinalizer {
 	private final ManusProperties manusProperties;
 
 	public PlanFinalizer(LlmService llmService, PlanExecutionRecorder recorder, PromptService promptService,
-                         ManusProperties manusProperties) {
+			ManusProperties manusProperties) {
 		this.llmService = llmService;
 		this.recorder = recorder;
 		this.promptService = promptService;

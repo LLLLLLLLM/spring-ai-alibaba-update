@@ -99,10 +99,10 @@ public class DynamicAgent extends ReActAgent {
 	}
 
 	public DynamicAgent(LlmService llmService, PlanExecutionRecorder planExecutionRecorder,
-                        ManusProperties manusProperties, String name, String description, String nextStepPrompt,
-                        List<String> availableToolKeys, ToolCallingManager toolCallingManager,
-                        Map<String, Object> initialAgentSetting, UserInputService userInputService, PromptService promptService,
-                        DynamicModelEntity model) {
+			ManusProperties manusProperties, String name, String description, String nextStepPrompt,
+			List<String> availableToolKeys, ToolCallingManager toolCallingManager,
+			Map<String, Object> initialAgentSetting, UserInputService userInputService, PromptService promptService,
+			DynamicModelEntity model) {
 		super(llmService, planExecutionRecorder, manusProperties, initialAgentSetting, promptService);
 		this.agentName = name;
 		this.agentDescription = description;
@@ -173,8 +173,7 @@ public class DynamicAgent extends ReActAgent {
 				chatClient = llmService.getAgentChatClient();
 			}
 			else {
-				chatClient = llmService.getDynamicChatClient(model.getBaseUrl(), model.getApiKey(),
-						model.getModelName());
+				chatClient = llmService.getDynamicChatClient(model.getBaseUrl(), model.getModelName());
 			}
 			response = chatClient.prompt(userPrompt).toolCallbacks(callbacks).call().chatResponse();
 			String modelName = response.getMetadata().getModel();
@@ -291,7 +290,7 @@ public class DynamicAgent extends ReActAgent {
 							.build();
 						processUserInputToMemory(userMessage);
 						userInputService.removeFormInputTool(getCurrentPlanId()); // Clean
-																					// up
+						// up
 
 						// 记录输入超时的动作结果
 						PlanExecutionRecorder.PlanExecutionParams params = new PlanExecutionRecorder.PlanExecutionParams();
@@ -320,9 +319,9 @@ public class DynamicAgent extends ReActAgent {
 				if (terminableTool.canTerminate()) {
 					log.info("TerminableTool can terminate for planId: {}", getCurrentPlanId());
 					userInputService.removeFormInputTool(getCurrentPlanId()); // Clean up
-																				// any
-																				// pending
-																				// form
+					// any
+					// pending
+					// form
 
 					// 记录成功完成的动作结果
 					PlanExecutionRecorder.PlanExecutionParams params = new PlanExecutionRecorder.PlanExecutionParams();

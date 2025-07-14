@@ -117,7 +117,7 @@ public class InnerStorageContentTool extends AbstractBaseTool<InnerStorageConten
 	private final PlanExecutionRecorder planExecutionRecorder;
 
 	public InnerStorageContentTool(UnifiedDirectoryManager directoryManager, SummaryWorkflow summaryWorkflow,
-                                   PlanExecutionRecorder planExecutionRecorder) {
+			PlanExecutionRecorder planExecutionRecorder) {
 		this.directoryManager = directoryManager;
 		this.summaryWorkflow = summaryWorkflow;
 		this.planExecutionRecorder = planExecutionRecorder;
@@ -188,8 +188,8 @@ public class InnerStorageContentTool extends AbstractBaseTool<InnerStorageConten
 	}
 
 	public static OllamaApi.ChatRequest.Tool getToolDefinition() {
-		OllamaApi.ChatRequest.Tool.Function function = new OllamaApi.ChatRequest.Tool.Function(TOOL_DESCRIPTION, TOOL_NAME,
-				PARAMETERS);
+		OllamaApi.ChatRequest.Tool.Function function = new OllamaApi.ChatRequest.Tool.Function(TOOL_DESCRIPTION,
+				TOOL_NAME, PARAMETERS);
 		return new OllamaApi.ChatRequest.Tool(function);
 	}
 

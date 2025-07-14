@@ -359,8 +359,8 @@ public class RepositoryPlanExecutionRecorder implements PlanExecutionRecorder {
 		}
 
 		// Find the ThinkActRecord by ID and update it with action results
-		ThinkActRecord thinkActRecord = findThinkActRecordInPlan(
-				planExecutionRecord, params.getCreatedThinkActRecordId());
+		ThinkActRecord thinkActRecord = findThinkActRecordInPlan(planExecutionRecord,
+				params.getCreatedThinkActRecordId());
 
 		if (thinkActRecord != null) {
 			// Record action start if not already recorded
