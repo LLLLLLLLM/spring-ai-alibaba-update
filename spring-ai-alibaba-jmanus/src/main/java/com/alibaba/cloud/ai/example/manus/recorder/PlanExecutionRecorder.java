@@ -20,6 +20,8 @@ import com.alibaba.cloud.ai.example.manus.planning.model.vo.ExecutionStep;
 import com.alibaba.cloud.ai.example.manus.recorder.entity.PlanExecutionRecord;
 import com.alibaba.cloud.ai.example.manus.recorder.entity.ThinkActRecord;
 
+import java.util.List;
+
 /**
  * Plan execution recorder interface that defines methods for recording and retrieving
  * plan execution details.
@@ -46,7 +48,8 @@ public interface PlanExecutionRecorder {
 	 * @param step Execution step
 	 * @param context Execution context
 	 */
-	void recordStepEnd(ExecutionStep step, ExecutionContext context);
+	void recordStepEnd(ExecutionStep step,
+                       ExecutionContext context);
 
 	/**
 	 * Record the start of plan execution.
@@ -194,6 +197,9 @@ public interface PlanExecutionRecorder {
 
 		/** Whether a sub-plan was created */
 		boolean subPlanCreated;
+
+		/** Action tool information list */
+		List<ThinkActRecord.ActToolInfo> actToolInfoList;
 
 		/** Execution summary */
 		String summary;
@@ -417,6 +423,15 @@ public interface PlanExecutionRecorder {
 
 		public void setSummary(String summary) {
 			this.summary = summary;
+		}
+
+		public List<ThinkActRecord.ActToolInfo> getActToolInfoList() {
+			return actToolInfoList;
+		}
+
+		public void setActToolInfoList(
+				List<ThinkActRecord.ActToolInfo> actToolInfoList) {
+			this.actToolInfoList = actToolInfoList;
 		}
 
 	}

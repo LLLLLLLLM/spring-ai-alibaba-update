@@ -359,8 +359,8 @@ public class RepositoryPlanExecutionRecorder implements PlanExecutionRecorder {
 		}
 
 		// Find the ThinkActRecord by ID and update it with action results
-		ThinkActRecord thinkActRecord = findThinkActRecordInPlan(planExecutionRecord,
-				params.getCreatedThinkActRecordId());
+		ThinkActRecord thinkActRecord = findThinkActRecordInPlan(
+				planExecutionRecord, params.getCreatedThinkActRecordId());
 
 		if (thinkActRecord != null) {
 			// Record action start if not already recorded
@@ -377,6 +377,11 @@ public class RepositoryPlanExecutionRecorder implements PlanExecutionRecorder {
 			// Record error if any
 			if (params.getErrorMessage() != null) {
 				thinkActRecord.recordError(params.getErrorMessage());
+			}
+
+			// Set actToolInfoList if available
+			if (params.getActToolInfoList() != null) {
+				thinkActRecord.setActToolInfoList(params.getActToolInfoList());
 			}
 
 			// Set think-act execution to update the record
