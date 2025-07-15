@@ -15,24 +15,29 @@
  */
 package com.alibaba.cloud.ai.example.manus.tool.mapreduce;
 
-import java.io.*;
-import java.nio.file.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.stream.Collectors;
-
+import com.alibaba.cloud.ai.example.manus.config.ManusProperties;
 import com.alibaba.cloud.ai.example.manus.tool.AbstractBaseTool;
 import com.alibaba.cloud.ai.example.manus.tool.TerminableTool;
 import com.alibaba.cloud.ai.example.manus.tool.code.ToolExecuteResult;
 import com.alibaba.cloud.ai.example.manus.tool.filesystem.UnifiedDirectoryManager;
-import com.alibaba.cloud.ai.example.manus.config.ManusProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.model.ToolContext;
-import org.springframework.ai.ollama.api.OllamaApi;
-//import org.springframework.ai.openai.api.OpenAiApi;
+import org.springframework.ai.openai.api.OpenAiApi;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Data split tool for MapReduce workflow data preparation phase Responsible for
@@ -438,7 +443,7 @@ public class MapReduceTool extends AbstractBaseTool<MapReduceTool.MapReduceInput
 
 	// Convenience constructor with comma-separated string
 	public MapReduceTool(String planId, ManusProperties manusProperties, MapReduceSharedStateManager sharedStateManager,
-			UnifiedDirectoryManager unifiedDirectoryManager, String terminateColumnsString) {
+                         UnifiedDirectoryManager unifiedDirectoryManager, String terminateColumnsString) {
 		this.currentPlanId = planId;
 		this.manusProperties = manusProperties;
 		this.unifiedDirectoryManager = unifiedDirectoryManager;
@@ -459,7 +464,7 @@ public class MapReduceTool extends AbstractBaseTool<MapReduceTool.MapReduceInput
 
 	// Main constructor with List<String> terminateColumns
 	public MapReduceTool(String planId, ManusProperties manusProperties, MapReduceSharedStateManager sharedStateManager,
-			UnifiedDirectoryManager unifiedDirectoryManager, List<String> terminateColumns) {
+                         UnifiedDirectoryManager unifiedDirectoryManager, List<String> terminateColumns) {
 		this.currentPlanId = planId;
 		this.manusProperties = manusProperties;
 		this.unifiedDirectoryManager = unifiedDirectoryManager;
@@ -501,16 +506,16 @@ public class MapReduceTool extends AbstractBaseTool<MapReduceTool.MapReduceInput
 		return "data-processing";
 	}
 
-	public static OllamaApi.ChatRequest.Tool getToolDefinition() {
+	public static OpenAiApi.FunctionTool getToolDefinition() {
 		// Use default terminate columns for static tool definition
 		return getToolDefinition(null);
 	}
 
-	public static OllamaApi.ChatRequest.Tool getToolDefinition(List<String> terminateColumns) {
+	public static OpenAiApi.FunctionTool getToolDefinition(List<String> terminateColumns) {
 		String parameters = generateParametersJson(terminateColumns);
-		OllamaApi.ChatRequest.Tool.Function function = new OllamaApi.ChatRequest.Tool.Function(TOOL_DESCRIPTION,
-				TOOL_NAME, parameters);
-		return new OllamaApi.ChatRequest.Tool(function);
+		OpenAiApi.FunctionTool.Function function = new OpenAiApi.FunctionTool.Function(TOOL_DESCRIPTION, TOOL_NAME,
+				parameters);
+		return new OpenAiApi.FunctionTool(function);
 	}
 
 	/**
@@ -686,8 +691,7 @@ public class MapReduceTool extends AbstractBaseTool<MapReduceTool.MapReduceInput
 			// Determine output directory - store to
 			// inner_storage/{rootPlanId}/{currentPlanId}/tasks directory
 			// This creates a hierarchical structure where sub-plan data is stored under
-			// the
-			// root plan
+			// the root plan
 			Path rootPlanDir = getPlanDirectory(rootPlanId);
 			Path currentPlanDir = rootPlanDir.resolve(currentPlanId);
 			Path tasksPath = currentPlanDir.resolve(TASKS_DIRECTORY_NAME);
@@ -695,23 +699,16 @@ public class MapReduceTool extends AbstractBaseTool<MapReduceTool.MapReduceInput
 
 			List<String> allTaskDirs = new ArrayList<>();
 
-			// Check if infinite context is enabled for enhanced processing
-			boolean infiniteContextEnabled = isInfiniteContextEnabled();
-			if (infiniteContextEnabled) {
-				log.info("Infinite context enabled for plan: {}, context size: {}", currentPlanId,
-						getInfiniteContextTaskContextSize());
-			}
-
 			if (isFile && isTextFile(path.toString())) {
-				// Process single file - always use infinite context task context size
+				// Process single file - use infinite context task context size
 				int splitSize = getInfiniteContextTaskContextSize();
 				SplitResult result = splitSingleFileToTasks(path, null, splitSize, tasksPath, null);
 				allTaskDirs.addAll(result.taskDirs);
 
 			}
 			else if (isDirectory) {
-				// Process all text files in directory - always use infinite context task
-				// context size
+				// Process all text files in directory - use infinite context task context
+				// size
 				int splitSize = getInfiniteContextTaskContextSize();
 				List<Path> textFiles = Files.list(path)
 					.filter(Files::isRegularFile)
@@ -1257,18 +1254,6 @@ public class MapReduceTool extends AbstractBaseTool<MapReduceTool.MapReduceInput
 		// For now, use default timeout until the configuration is added to
 		// ManusProperties
 		return 300; // Default timeout is 5 minutes
-	}
-
-	/**
-	 * Check if infinite context is enabled
-	 * @return true if infinite context is enabled, false otherwise
-	 */
-	private boolean isInfiniteContextEnabled() {
-		if (manusProperties != null) {
-			Boolean enabled = manusProperties.getInfiniteContextEnabled();
-			return enabled != null ? enabled : false;
-		}
-		return false;
 	}
 
 	/**
